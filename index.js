@@ -1,16 +1,19 @@
+const moviesRouters = require('./router/moviesRouter')
+const userRouters = require('./router/userRouter')
+const {urlencoded} = require('express')
 const express = require('express')
-const cors = require('cors')
 
-// main app
-const app = express()
+const app = express(express)
 
-// apply middleware
-app.use(cors())
+const PORT = "3000"
 
-// main route
-const response = (req, res) => res.status(200).send('<h1>REST API JCWM16AH</h1>')
-app.get('/', response)
+app.use(urlencoded({extended: false}))
+app.use(express.json())
 
-// bind to local machine
-const PORT = process.env.PORT || 2000
-app.listen(PORT, () => `CONNECTED : port ${PORT}`)
+
+app.use(moviesRouters)
+app.use(userRouters)
+
+app.listen(PORT, ()=>{
+    console.log(`Listening to port ${PORT}`)
+})
